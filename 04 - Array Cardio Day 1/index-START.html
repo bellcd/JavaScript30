@@ -31,29 +31,126 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    const inventorsBornInThe1500s = inventors.filter((inventor, i, array) => {
+      if (inventor.year >= 1500 && inventor.year <= 1599) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    console.log('inventorsBornInThe1500s: ', inventorsBornInThe1500s);
+    console.table(inventorsBornInThe1500s);
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
+    const inventorsFirstAndLastNames = inventors.map((inventor, i, array) => {
+      // return {
+      //   first: inventor.first,
+      //   last: inventor.last
+      // }
+
+      return `${inventor.first} ${inventor.last}`; // not clear if you want like this, or inside an object ...
+    });
+    console.log('inventorsFirstAndLastNames: ', inventorsFirstAndLastNames);
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    const inventorsSortedByBirthdateOldestToYoungest = inventors.sort((a, b) => {
+      // return negative, a comes first
+      // return positive, b comes first
+
+      if (a.year < b.year) {
+        return -1;
+      } else if (a.year > b.year) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    console.log('inventorsSortedByBirthdateOldestToYoungest: ', inventorsSortedByBirthdateOldestToYoungest);
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
+    const totalNumYearsAllInventorsLived = inventors.reduce((acc, inventor, i, array) => {
+      return acc + (inventor.passed - inventor.year);
+    }, 0);
+    console.log('totalNumYearsAllInventorsLived: ', totalNumYearsAllInventorsLived);
+
+    console.log('inventors: ', inventors);
 
     // 5. Sort the inventors by years lived
+    const inventorsSortedByYearsLived = inventors.sort((a, b) => {
+      // if I want a to come first, return negative
+      // if I want b to come first, return positive
+      // if I want to leave their order unchanged, return 0
+
+      const aYearsLived = (a.passed - a.year);
+      const bYearsLived = (b.passed - b.year)
+
+      if (aYearsLived < bYearsLived) {
+        return -1;
+      } else if (aYearsLived > bYearsLived) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    console.log('inventorsSortedByYearsLived: ', inventorsSortedByYearsLived);
+
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+    const nodes = Array.from(document.querySelectorAll('div.mw-category li a'));
+    const boulevardsThatIncludeDe = nodes.map((node) => {
+      return node.attributes.title.textContent;
+    })
+    .filter((name) => {
+      return name.includes(' de ');
+    });
 
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    people.sort((a, b) => {
+      // if I want a to come first, return negative
+      // if I want b to come first, return positive
+      // if I want a to remain unchanged in relation to b, return 0
+
+      // isolate the last names of a and b, in order to compare them
+      // split on ',' and take the first element as the last name
+      const aLastName = a.split(',')[0];
+      const bLastName = b.split(',')[0];
+
+      // compare the string directly, and return appropriately
+      if (aLastName < bLastName) {
+        return -1;
+      } else if (aLastName > bLastName) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    console.log('people: ', people);
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+    // reduce through the array
+    const dataSum = data.reduce((acc, currentValue) => {
+      // if acc does NOT have property of current value
+        // set property of current value, with value 1
+        if (!acc[currentValue]) {
+          acc[currentValue] = 1;
+      } else {
+        // else, increment value at current value
+        acc[currentValue] = ++(acc[currentValue])
+      }
+      return acc;
+    }, {});
+      // initial value is an empty object
 
+    console.log('dataSum: ', dataSum);
   </script>
 </body>
 </html>
