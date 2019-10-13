@@ -17,6 +17,92 @@
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
+const cities = [];
+let coords;
+
+fetch(endpoint)
+  .then((blob) => {
+    return blob.json();
+  })
+  .then(data => {
+    cities.push(...data);
+  })
+
+  function getLocation() {
+    navigator.geolocation.getCurrentPosition(position => {
+      coords = position.coords;
+    });
+  }
+
+  function calculateDistance(array) {
+    let copyOfCities = array.slice();
+
+    const lat = coords.latitude;
+    const long = coords.longitude;
+
+    // add a cumulative distance number to each city, from the user's current location
+    copyOfCities = copyOfCities.map((place) => {
+      // calculate the cumulative distance
+      const distance = Math.abs(lat - place.latitude) + Math.abs(long - place.longitude);
+
+      // add that distance to a new property on each city object
+      place.distance = distance;
+      return place;
+    });
+
+    // sort copyOfCities based on the smallest total distance from lat & long
+    return copyOfCities.sort((a, b) => {
+      if (a.distance < b.distance) {
+        return -1;
+      } else if (a.distance > b.distance) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+  }
+
+  function findMatches(wordToMatch, cities) {
+    return cities.filter((place) => {
+      // here we need to figure out if the city or state matches what was searched
+      const regex = new RegExp(wordToMatch, 'gi');
+      return place.city.match(regex) || place.state.match(regex);
+    })
+  }
+
+  function displayMatches() {
+    let matchArray = findMatches(this.value, cities);
+    const regex = new RegExp(this.value, 'gi');
+
+    if (coords) {
+      matchArray = calculateDistance(matchArray);
+    }
+
+    const html = matchArray.map((place) => {
+      const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`)
+      const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`)
+      return `
+      <li>
+        <span class="name">${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(place.population)}</span>
+      </li>
+      `
+    }).join('');
+
+    suggestions.innerHTML = html;
+  }
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  const searchInput = document.querySelector('.search');
+  const suggestions = document.querySelector('.suggestions');
+
+  searchInput.addEventListener('change', displayMatches)
+  searchInput.addEventListener('keyup', displayMatches);
+
+  getLocation();
 </script>
 </body>
 </html>
