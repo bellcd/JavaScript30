@@ -7,8 +7,61 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
-</script>
+  const canvas = document.querySelector('#draw');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.lineWidth = 50;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#BADA55';
 
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0;
+  let lineWidthIsGrowing = true;
+
+  function draw(e) {
+    if (!isDrawing) { return; } // stops the rest of the event handler from running, ie, when the person is NOT mousing down
+
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+    if (ctx.lineWidth === 1) {
+      lineWidthIsGrowing = true;
+    } else if (ctx.lineWidth === 100) {
+      lineWidthIsGrowing = false;
+    }
+
+    if (lineWidthIsGrowing) {
+      ctx.lineWidth++;
+    } else {
+      ctx.lineWidth--;
+    }
+
+    console.log(ctx.lineWidth)
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    hue++;
+    if (hue === 360) {
+      hue = 0;
+    }
+    console.log(hue);
+  }
+
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+  });
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+</script>
 <style>
   html, body {
     margin: 0;
