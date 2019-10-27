@@ -58,44 +58,98 @@
   -->
   <div class="inbox">
     <div class="item">
-      <input type="checkbox">
+      <input type="checkbox" data-i="0">
       <p>This is an inbox layout.</p>
     </div>
     <div class="item">
-      <input type="checkbox">
+      <input type="checkbox" data-i="1">
       <p>Check one item</p>
     </div>
     <div class="item">
-      <input type="checkbox">
+      <input type="checkbox" data-i="2">
       <p>Hold down your Shift key</p>
     </div>
     <div class="item">
-      <input type="checkbox">
+      <input type="checkbox" data-i="3">
       <p>Check a lower item</p>
     </div>
     <div class="item">
-      <input type="checkbox">
+      <input type="checkbox" data-i="4">
       <p>Everything in between should also be set to checked</p>
     </div>
     <div class="item">
-      <input type="checkbox">
+      <input type="checkbox" data-i="5">
       <p>Try to do it without any libraries</p>
     </div>
     <div class="item">
-      <input type="checkbox">
+      <input type="checkbox" data-i="6">
       <p>Just regular JavaScript</p>
     </div>
     <div class="item">
-      <input type="checkbox">
+      <input type="checkbox" data-i="7">
       <p>Good Luck!</p>
     </div>
     <div class="item">
-      <input type="checkbox">
+      <input type="checkbox" data-i="8">
       <p>Don't forget to tweet your result!</p>
     </div>
   </div>
 
-<script>
-</script>
+  <script>
+    // maintain a NodeList of all the checkboxes
+    const checkboxes = document.querySelectorAll('input[type=checkbox]');
+
+    // var lastChecked is data-i of last-clicked-on <input>
+    let lastChecked = null;
+    let currentlyChecked = null;
+
+    // TODO: there's a property on the click event that indicates whether shif is held down or not ...
+    // flag and handler for if the shift key is held down
+    let isShiftDown = false;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Shift') {
+        isShiftDown = true;
+      console.log('shift is held down');
+      }
+    });
+
+    document.addEventListener('keyup', (e) => {
+      if (e.key === 'Shift') {
+        isShiftDown = false;
+      console.log('shift is off');
+      }
+    });
+
+    // add event listeners on the <input> fields ????
+    document.addEventListener('click', (e) => {
+      currentlyChecked = e.target.dataset.i;
+
+      let earlier = lastChecked < currentlyChecked ? lastChecked : currentlyChecked;
+      let later = lastChecked < currentlyChecked ? currentlyChecked : lastChecked;
+
+
+      if (isShiftDown) {
+        // add a click handler
+        if (e.target.type === 'checkbox') {
+          // get the data-i value of the clicked on checkbox
+
+
+
+          // iterate through the NodeList, starting from the earlier of the lastChecked / currentlyChecked, going through the other one
+          checkboxes.forEach(checkbox => {
+            if (checkbox.dataset.i >= earlier && checkbox.dataset.i <= later) {
+              // turn on the checked value of each node between these two
+              checkbox.checked = true;
+            }
+          });
+        }
+      }
+      // set lastChecked to the currentlyChecked
+      lastChecked = currentlyChecked;
+      currentlyChecked = null;
+    })
+
+  </script>
 </body>
 </html>
