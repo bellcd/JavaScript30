@@ -9,7 +9,7 @@
   <p onClick="makeGreen()">×BREAK×DOWN×</p>
 
   <script>
-    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+    const dogs = [{ name: 'Snickers', age: 2, 'breed': 'the best' }, { name: 'hugo', age: 8 }];
 
     function makeGreen() {
       const p = document.querySelector('p');
@@ -20,26 +20,62 @@
     // Regular
 
     // Interpolated
+    console.log('Hello I am a %s string', 'default')
 
-    // Styled
+    // // Styled
+    // console.log('%cI am a styled string', 'font-size: 50px; background-color: blue;');
 
     // warning!
+    console.warn('OHHHH NOOOO');
 
     // Error :|
+    console.error('OHHHH NOOOO');
 
     // Info
+    console.info('OHHHH NOOOO');
 
     // Testing
+    console.assert(1 === 1);
 
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
+    const p = document.querySelector('p');
+    console.log(p);
+    console.dir(p);
+
+    console.clear();
 
     // Grouping together
+      dogs.forEach(dog => {
+        console.group(`${dog.name}`);
+          console.log(`name: ${dog.name}`);
+          console.log(`age: ${dog.age}`);
+        console.groupEnd(`${dog.name}`);
+      })
+    // // counting
+    // console.count('steve');
+    // console.count('wes');
+    // console.count('wes');
+    // console.count('steve');
+    // console.count('steve');
+    // console.count('wes');
+    // console.count('wes');
+    // console.count('steve');
+    // console.count('steve');
+    // console.count('steve');
+    // console.count('wes');
+    // console.count('wes');
 
-    // counting
-
+    console.count('wes');
     // timing
+      console.time('running timeout');
+      setTimeout(() => {
+        console.timeEnd('running timeout');
+      }, 500)
+
+      console.table(dogs);
 
   </script>
 </body>
