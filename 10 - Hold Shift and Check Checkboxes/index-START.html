@@ -103,39 +103,15 @@
     let lastChecked = null;
     let currentlyChecked = null;
 
-    // TODO: there's a property on the click event that indicates whether shif is held down or not ...
-    // flag and handler for if the shift key is held down
-    let isShiftDown = false;
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Shift') {
-        isShiftDown = true;
-      console.log('shift is held down');
-      }
-    });
-
-    document.addEventListener('keyup', (e) => {
-      if (e.key === 'Shift') {
-        isShiftDown = false;
-      console.log('shift is off');
-      }
-    });
-
     // add event listeners on the <input> fields ????
     document.addEventListener('click', (e) => {
+      // get the data-i value of the clicked on checkbox
       currentlyChecked = e.target.dataset.i;
 
       let earlier = lastChecked < currentlyChecked ? lastChecked : currentlyChecked;
       let later = lastChecked < currentlyChecked ? currentlyChecked : lastChecked;
 
-
-      if (isShiftDown) {
-        // add a click handler
-        if (e.target.type === 'checkbox') {
-          // get the data-i value of the clicked on checkbox
-
-
-
+      if (e.shiftKey && e.target.type === 'checkbox') {
           // iterate through the NodeList, starting from the earlier of the lastChecked / currentlyChecked, going through the other one
           checkboxes.forEach(checkbox => {
             if (checkbox.dataset.i >= earlier && checkbox.dataset.i <= later) {
@@ -143,7 +119,6 @@
               checkbox.checked = true;
             }
           });
-        }
       }
       // set lastChecked to the currentlyChecked
       lastChecked = currentlyChecked;
