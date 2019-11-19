@@ -11,13 +11,11 @@ window.onload = (e) => {
 
   let scrub = (e) => {
 
-    console.log(calculatePercent(e))
+    const percent = calculatePercent(e);
     // console.log('clientX / srcElement.clientWidth: ', e.clientX / e.srcElement.clientWidth); // TODO: why do these not calculate the percent correctly??
     // console.log('e.x / e.srcElement.clientWidth: ', e.x, e.srcElement.clientWidth);
 
-    if (e.currentTarget === progressBar) {
-
-    }
+    document.querySelector('.progress__filled').style = `flex-basis: ${percent * 100}%`;
   }
 
   let calculatePercent = (e) => {
