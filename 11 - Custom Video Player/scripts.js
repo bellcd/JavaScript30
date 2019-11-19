@@ -4,6 +4,7 @@ window.onload = (e) => {
   let timestamp = video.currentTime;
   let progressBar = document.querySelector('.progress');
 
+  // TODO: does scrubBar update when the video is playing??
   // scrubBar
   let scrubSetup = () => {
     progressBar.addEventListener('mousemove', scrub);
@@ -30,18 +31,15 @@ window.onload = (e) => {
     return (screenX - margin) / progressBarWidth;
   }
 
+
+
   document.addEventListener('mousedown', scrubSetup);
   document.addEventListener('mouseup', () => {
     progressBar.removeEventListener('mousemove', scrub);
     // document.removeEventListener('mousemove', scrub); // TODO #2
   });
 
+  document.querySelector('input[name="volume"]').addEventListener('change', (e) => {
+    video.volume = e.target.value;
+  });
 }
-
-// on mousedown on the scrub bar
-  // add event listener on mousemove
-    // each mousemove event calculates the current position as a percentage of the div's width
-    // seeks the video to that percent
-    // updates the visual to display that percent of the scrub bar filled
-// on mouseup on the scrub bar
-  // removes that event listener
