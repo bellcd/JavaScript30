@@ -4,6 +4,7 @@ window.onload = (e) => {
   let timestamp = video.currentTime;
   let progressBar = document.querySelector('.progress');
 
+  // scrubBar
   let scrubSetup = () => {
     progressBar.addEventListener('mousemove', scrub);
     // document.addEventListener('mousemove', scrub); // TODO: why does this not work ?? along with #2
@@ -14,6 +15,8 @@ window.onload = (e) => {
     const percent = calculatePercent(e);
     // console.log('clientX / srcElement.clientWidth: ', e.clientX / e.srcElement.clientWidth); // TODO: why do these not calculate the percent correctly??
     // console.log('e.x / e.srcElement.clientWidth: ', e.x, e.srcElement.clientWidth);
+
+    video.currentTime = video.duration * percent;
 
     document.querySelector('.progress__filled').style = `flex-basis: ${percent * 100}%`;
   }
@@ -28,7 +31,6 @@ window.onload = (e) => {
   }
 
   document.addEventListener('mousedown', scrubSetup);
-
   document.addEventListener('mouseup', () => {
     progressBar.removeEventListener('mousemove', scrub);
     // document.removeEventListener('mousemove', scrub); // TODO #2
