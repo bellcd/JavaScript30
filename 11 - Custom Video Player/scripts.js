@@ -31,6 +31,13 @@ window.onload = (e) => {
     return (screenX - margin) / progressBarWidth;
   }
 
+  let playToggle = () => {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  }
 
 
   document.addEventListener('mousedown', scrubSetup);
@@ -39,21 +46,29 @@ window.onload = (e) => {
     // document.removeEventListener('mousemove', scrub); // TODO #2
   });
 
+  video.addEventListener('timeupdate', (e) => {
+    document.querySelector('.progress__filled').style = `flex-basis: ${e.target.currentTime / e.target.duration * 100}%`;
+  })
+
   // volume change slider
   document.querySelector('input[name="volume"]').addEventListener('change', (e) => {
     video.volume = e.target.value;
   });
 
   // play button
-  document.querySelector('.player__button, toggle').addEventListener('click', (e) => {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-  });
+  document.querySelector('.player__button, toggle').addEventListener('click', playToggle);
+  video.addEventListener('click', playToggle);
 
+  // playbackRate
   document.querySelector('input[name="playbackRate"').addEventListener('change', (e) => {
     video.playbackRate = e.target.value;
   });
+
+  // skip forward and back
+  let arr = Array.from(document.querySelectorAll('.player__button'));
+  arr.filter(button => {
+    return !(Array.from(button.classList).includes('toggle'))
+  }).forEach(button => button.addEventListener('click', (e) => {
+    video.currentTime = video.currentTime + Number(e.target.dataset.skip);
+  }));
 }
