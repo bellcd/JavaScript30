@@ -65,10 +65,16 @@ window.onload = (e) => {
   });
 
   // skip forward and back
-  let arr = Array.from(document.querySelectorAll('.player__button'));
-  arr.filter(button => {
-    return !(Array.from(button.classList).includes('toggle'))
-  }).forEach(button => button.addEventListener('click', (e) => {
+  // let arr = Array.from(document.querySelectorAll('.player__button'));
+  // arr.filter(button => {
+  //   return !(Array.from(button.classList).includes('toggle'))
+  // })
+  Array.from(document.querySelectorAll('[data-skip]')).forEach(button => button.addEventListener('click', (e) => {
     video.currentTime = video.currentTime + Number(e.target.dataset.skip);
   }));
+
+  // fullscreen
+  document.querySelector('.fullscreen').addEventListener('click', (e) => {
+    video.requestFullscreen();
+  });
 }
