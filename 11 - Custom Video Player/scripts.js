@@ -39,7 +39,16 @@ window.onload = (e) => {
     // document.removeEventListener('mousemove', scrub); // TODO #2
   });
 
+  // volume change slider
   document.querySelector('input[name="volume"]').addEventListener('change', (e) => {
     video.volume = e.target.value;
+  });
+
+  document.querySelector('.player__button, toggle').addEventListener('click', (e) => {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
   });
 }
