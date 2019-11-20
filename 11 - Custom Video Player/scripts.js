@@ -44,11 +44,16 @@ window.onload = (e) => {
     video.volume = e.target.value;
   });
 
+  // play button
   document.querySelector('.player__button, toggle').addEventListener('click', (e) => {
     if (video.paused) {
       video.play();
     } else {
       video.pause();
     }
+  });
+
+  document.querySelector('input[name="playbackRate"').addEventListener('change', (e) => {
+    video.playbackRate = e.target.value;
   });
 }
